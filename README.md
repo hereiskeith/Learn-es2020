@@ -1,5 +1,8 @@
 # Learn-ES2020
-Take a sip and dive deep in ES2020
+Take a sip in ES2020 and dive deep in JavaScript
+
+<p><br /></p>
+
 reference: https://dev.to/carlillo/es2020-features-in-simple-examples-1513, https://alligator.io/js/es2020/
 
 ## `String.prototype.matchAll`
