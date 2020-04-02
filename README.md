@@ -21,7 +21,7 @@ Output:
 ```
 
 ### string.matchAll
-string.macthAll gives you the full information for each individual match, including capturing groups.
+`string.macthAll` gives you the full information for each individual match, including capturing groups.
 ```
 const string = 'Magic hex numbers: DEADBEEF CAFE';
 const regex = /\b\p{ASCII_Hex_Digit}+\b/gu;
@@ -53,7 +53,7 @@ for (const { 0: occurrence, index, input, groups} of string.matchAll(regex)) {
 
 ## Promise.allSettled
 
-Promise.allSettled returns a promise that is fullfilled with an array of promise state snapshots, but only after all the original promises have settled, i.e. become either fulfilled or rejected.
+`Promise.allSettled` returns a promise that is fullfilled with an array of promise state snapshots, but only after all the original promises have settled, i.e. become either fulfilled or rejected.
 
 We say that a promise is settled if it is not pending, i.e. if it is either fulfilled or rejected.
 
@@ -87,4 +87,102 @@ Promise.allSettled([promise1, promise2, promise3])
 //   {status: "fulfilled", value: "Even better"}
 // ]
   
+```
+
+## gobalThis object
+
+The `globalThis` was not standardized before ES10.
+In production code you would "standardized" it across multiple platforms on your own by writing this monstrosity:
+
+```
+// Solution before ES10:
+var getGlobal = function () {
+  if (typeof self !== 'undefined') { return self; }
+  if (typeof window !== 'undefined') { return window; }
+  if (typeof global !== 'undefined') { return global; }
+  throw new Error('unable to locate global object');
+};
+
+// ES10 added globalThis object which should be used from now on to access global scope on any platform
+
+// Access global array constructor
+globalThis.Array(0, 1, 2) // [0, 1, 2]
+
+// Similar to window.v = { value: true } in <= ES10 in browser
+globalThis.v = { value: true };
+
+```
+
+## Nullish coalescing Operator
+When performing property accesses, it is often desired to provide a default value if the result of that property access is `null` or `undefined`. At present, a typical way to express this intent in JavaScript is by using the || operator.
+
+```
+let person = {
+  profile: {
+    name: "",
+    age: 0
+  }
+};
+
+// falsey values produce surprising results:
+
+console.log(person.profile.name || "Anonymous"); // Anonymous
+console.log(person.profile.age || 18); // 18
+```
+
+The nullary coalescing operator(double question marks operator) is intended these cases better and serves as an equality check against nullart values (null or undefined). If the expression at the left-hand side of the ?? operator evaluates to undefined or null, its right-hand side is returned.
+
+```
+console.log(person.profile.name ?? "Anonymous"); // ""
+console.log(person.profile.age ?? 18); // 0
+```
+
+## Optional Chaining
+Similar to the nullish coalescing operator, JavaScript may not act how we want when dealing with falsy values. We can return a value if what we want is undefined, but what if the path to it is undefined?
+
+By adding a question mark before our dot notation we can make any part of a value’s path optional so we can still interact with it.
+```
+let person = {};
+
+console.log(person.profile.name ?? "Anonymous"); // Cannot read property 'name' of undefined
+console.log(person?.profile?.name ?? "Anonymous"); // 'Anonymous'
+console.log(person?.profile?.age ?? 18); // 18
+```
+
+Also, many API return either an object or null/undefined, and one may want to extract a property from the result only when it is not null:
+```
+/*
+The Optional Chaining operator is spelled ?. It may appear in three positions:
+
+obj?.prop  // optional static property access
+obj?.[expr] // optional dynamic property access
+fun?.(...args) // optional function or method call
+*/
+
+const book = form.querySelector('input[name=book]');
+const value = book ? book.value : undefined;
+
+// Optional Chaining operator
+const value = form.querySelector('input[name=book]')?.value
+```
+
+When some other value than `undefined` is desired for the missing case, this can usually be handled with the Nullish coalescing operator:
+
+```
+const book = {
+  hashtags: ['Angular'],
+  entities: {
+    hashtags: ['React']  
+  }
+}
+const hashtags = book.entities && book.entities.hashtags;
+
+// Optional Chaining Operator
+const hashtags = book.entities?.hashtags;
+// ['React']
+
+// When some other value than "undefined" is desired for the missing case,
+// this can usually be handled with the Nullish calescing operator:
+
+const hashtags = book.entities?.hashtags ?? ['React'];
 ```
