@@ -189,3 +189,25 @@ const hashtags = book.entities?.hashtags;
 
 const hashtags = book.entities?.hashtags ?? ['React'];
 ```
+
+## Dynamic Import
+
+If you had a file full of utility functions, some of them may rarely be used and importing all of their dependencies could just be a waste of resources. Now we can use async/await to dynamically import our dependencies when we need them.
+
+```
+// Previously
+const add = (num1, num2) => num1 + num2;
+
+export { add };
+
+// with es20
+
+const doMath = async (num1, num2) => {
+  if (num1 && num2) {
+    const math = await import('./math.js');
+    console.log(math.add(5, 10));
+  };
+};
+
+doMath(4, 2);
+```
