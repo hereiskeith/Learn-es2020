@@ -211,3 +211,66 @@ const doMath = async (num1, num2) => {
 
 doMath(4, 2);
 ```
+
+### Private Class Variable
+
+One of the main purposes of classes is to contain our code into more reusable modules. Because you'll create a class to will be used in many places that you may not want everything inside it to be available globally.
+
+Now by adding a hash symbol in front of your variable or function we can preserve them entirely for internal use inside the class inside the class.
+
+```
+class Message {
+  #message: "Nice!"
+  
+  greet() {
+    console.log(this.#message)
+  }
+}
+
+const greeting = new Message();
+
+greeting.greet(); // Nice!
+
+console.log(greeting.#message); // Private name #message is not defined
+```
+
+### BigInt
+We won’t go into the technical details, but because of how JavaScript handles numbers, when you go high enough things start to get a bit wonky. The largest number JavaScript can handle is 2^53, which we can see with MAX_SAFE_INTEGER.
+```
+const maxNum = Number.MAX_SAFE_INTEGER;
+
+console.log(maxNum); // 9007199254740991
+
+// Anything above that and things start to get a little weird…
+console.log(max + 1); // 9007199254740992
+console.log(max + 2); // 9007199254740992
+console.log(max + 3); // 9007199254740994
+console.log(Math.pow(2, 53) == Math.pow(2, 53) + 1); // true
+```
+We can get around this with the new BigInt datatype. By throwing the letter ‘n’ on the end we can start using and interacting with insanely large numbers. We’re not able to intermix standard numbers with BigInt numbers, so any math will need to be also done with BigInts.
+
+```
+const bigNum = 100000000000000000000000000000n;
+
+console.log(bigNum * 2n); // 200000000000000000000000000000n
+```
+
+BigInt is the 7th primitive type and It is an arbitrary-precision integer. The variables can now represent ²⁵³ numbers and not just max out at 9007199254740992.
+
+```
+// BigInt constructor
+const larger = 9007199254740991n;
+const integer = BigInt(9007199254740991); //9007199254740991n
+const same = BigInt("9007199254740991"); //9007199254740991n
+
+//Typeof
+typeof 10; // "number"
+typeof(10n); // "bigint"
+
+//Equality
+10n === BigInt(10); // true
+10n == 10; // true
+
+// Math operation only works within its own type
+20n / 10n; // 2n
+20n / 2; // Uncaught TypeError: Cannot mix BigInt and other types```
