@@ -132,7 +132,7 @@ let person = {
 console.log(person.profile.name || "Anonymous"); // Anonymous
 console.log(person.profile.age || 18); // 18
 ```
-
+This works well for the common case of null and undefined values, but there are a number of falsy values that might produce surprising results.
 The nullary coalescing operator(double question marks operator) is intended these cases better and serves as an equality check against nullart values (null or undefined). If the expression at the left-hand side of the ?? operator evaluates to undefined or null, its right-hand side is returned.
 
 ```
